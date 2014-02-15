@@ -1,0 +1,48 @@
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <form enctype="multipart/form-data">
+        <input class="string" name="image_title" type="text" value="" />
+        <input name="image_file" type="file" />
+        <input type="button" value="Upload!" />
+    </form>
+    <progress></progress>
+    <p>
+        Current Status
+    </p>
+    <script>
+        // sample code used to write ajax-based uploading function on the client
+        $("p").append(" append text");
+        $(':button').click(function(){
+            $("p").append("button clicked");
+            var formData = new FormData($('form')[0]);
+            $.ajax({
+                url: 'upload',  //Server script to process data
+                type: 'POST',
+                xhr: function() {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if(myXhr.upload){ // Check if upload property exists
+                        myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                data: formData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                success: function(data)
+                {
+                    alert(data);
+                }
+            });
+        });
+
+        function progressHandlingFunction(e){
+            $("p").append("progress bar called");
+            if(e.lengthComputable){
+                $('progress').attr({value:e.loaded,max:e.total});
+            }
+        }
+    </script>
+
+</body>
