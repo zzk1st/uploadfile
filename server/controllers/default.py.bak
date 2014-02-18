@@ -33,23 +33,35 @@ def makeThumbnail(dbtable,ImageID,size=(150,150)):
     thisImage.update_record(thumbnail=thumbnail)
     return
 
-#def upload():
-#    image = db.image.imagefile.store(request.vars.image_file.file, request.vars.image_file.filename)
-#    id = db.image.insert(imagefile=image,title=request.vars.image_title)
-#    makeThumbnail(db.image, id)
-#    return "succeed"
+def upload():
+    image = db.image.imagefile.store(request.vars.imagefile.file, request.vars.imagefile.filename)
+    id = db.image.insert(   address=request.vars.address,
+                            note=request.vars.note,
+                            status="reviewing",
+                            imagefile=image)
 
-#def addimage():
-#    return locals()
-    
+    makeThumbnail(db.image, id)
+    return
+
 def getimagelist():
     # don't know what it is, it's related to accessing server with different port
     response.headers['Access-Control-Allow-Origin'] = "*"
     imageList=dict()
-    images = db().select(db.image.ALL)
+    if id in request.vars:
+        images = db().select(db.image.id==request.vars.id)
+    else:
+        images = db().select(db.image.ALL)
+        
     for image in images:
         # the code below is ugly, but we can't simply copy it by image.__dict__, since there are other fields in image
-        imageList[image.id] = dict(id=image.id, upload_time=image.upload_time, address=image.address, note=image.note, imagefile=image.imagefile, thumbnail=image.thumbnail)
+        imageList[image.id] = dict( id=image.id, 
+                                    upload_time=image.upload_time, 
+                                    address=image.address,
+                                    note=image.note, 
+                                    status=image.status,
+                                    imagefile=image.imagefile, 
+                                    thumbnail=image.thumbnail
+                                    )
         
     return dict(images=imageList)
     

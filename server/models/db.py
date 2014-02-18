@@ -84,6 +84,7 @@ db.define_table('image',
     Field('upload_time', 'datetime', default=request.now, writable=False, readable=False),
     Field('address'),
     Field('note','text'),
+    Field('status'),
     Field('imagefile', 'upload'),
     Field('thumbnail','upload',writable=False, readable=False)
     )

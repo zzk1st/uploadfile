@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload Image</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="{{=URL('static', 'css/jquery.mobile-1.4.1.css')}}" />
+<link rel="stylesheet" href="{{=URL('static', 'css/styles.css')}}" />
+</head>
+    
+<body>
+    <!-- index page -->
+    <div id="uploadImagePage" data-role="page" >
+        <div data-role="header" data-position="fixed">
+            <h1>Upload Image</h1>
+            <a href="#createImagePage" data-icon="edit" class="ui-btn-right">Create</a>
+        </div>
+
+        <div data-role="content">
+            <ul id="listviewImage" data-role="listview" data-filter="true"></ul>
+        </div>		
+    </div>
+
+    <!-- image details page -->
+    <div id="imageDetailsPage" data-role="page" >
+        <div data-role="header">
+            <h1>Image Details</h1>
+        </div>
+        <div data-role="content"> 
+            <img id="image"/>
+            <div id="imageDetails">
+            <h3 id="note"></h3>
+            <p id="upload_time"></p>
+            <p id="address"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- create image page -->
+    <div id="createImagePage" data-role="page" data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Upload an Image</h1>
+        </div>
+
+        <div data-role="content"> 
+            <form id="formCreateImage" method="post" enctype="multipart/form-data">
+                <input type="text" name="inputaddress" id="inputaddress" value="" placeholder="Address"/>
+                <textarea name="inputnote" id="inputnote" placeholder="Write some note here"></textarea>
+                <input name="inputimagefile" id="inputimagefile" type="file" />
+            </form>
+
+            <a id="btnUploadImage" data-role="button">Upload!</a>
+        </div>
+
+    </div>
+
+    <script src="{{=URL('static', 'js/jquery.js')}}"></script>
+    <script src="{{=URL('static', 'js/jquery.mobile-1.4.1.js')}}"></script>
+    <script src="{{=URL('static', 'js/imagelist.js')}}"></script>
+    <script src="{{=URL('static', 'js/imagedetails.js')}}"></script>
+    <script src="{{=URL('static', 'js/createimage.js')}}"></script>
+
+</body>
+
+</html>
