@@ -12,8 +12,17 @@
 
 def download():
     return response.download(request,db)
+
 def link():
     return response.download(request,db,attachment=False)
+
+def notLogin():
+    return "Not logged in"
+
+@service.run
+def login(username, password):
+    user = auth.login_bare(username,password)
+    return (user != False)
 
 def makeThumbnail(dbtable,ImageID,size=(150,150)):
     try:
@@ -43,6 +52,7 @@ def upload():
     makeThumbnail(db.image, id)
     return
 
+#@auth.requires_login()
 def getimagelist():
     # don't know what it is, it's related to accessing server with different port
     response.headers['Access-Control-Allow-Origin'] = "*"
@@ -65,7 +75,7 @@ def getimagelist():
         
     return dict(images=imageList)
     
-    
+@auth.requires_login()
 def index():
     form = SQLFORM(db.image)
     if form.process().accepted:
@@ -86,6 +96,9 @@ def index():
 	#	id = db.image.insert(imagefile=image,title=image_form.vars.image_title)
 	#images = db().select(db.image.ALL)
 	#return dict(images=images)
+
+def index2():
+    return dict()
 
 def user():
     """

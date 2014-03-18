@@ -1,23 +1,26 @@
-var serviceURL = "http://localhost:8000/upload_file/default/";
+var serviceURL = "http://192.168.1.3/uploadfile/default";
+var currentImageID;
 
-var images;
-
-$('#uploadImagePage').bind('pageinit', function(event) {
+$('#uploadImagePage').bind('pageshow', function(event) {
 	getImageList();
 });
 
+$('#listviewImage').on('click', 'li', function() {
+    currentImageID = $(this).attr("image-id");
+});
+
 function getImageList() {
-    $.getJSON(serviceURL + 'getimagelist.json', function(data) {
-        $('#imageList li').remove();
-        images = data.images;
+    $.getJSON(serviceURL + '/getimagelist.json', function(data) {
+        $('#listviewImage li').remove();
+        var images = data.images;
         $.each(images, function(id, image) {
-            $('#imageList').append('<li><a href="imagedetails.html?id=' + id + '">' +
-                '<img src="' + serviceURL + "download/" + image.thumbnail + '"/>' +
+            $('#listviewImage').append('<li image-id="' + id + '"><a href="#imageDetailsPage">' +
+                '<img src="' + serviceURL + "/download/" + image.thumbnail + '"/>' +
                 '<h4>'+ image.note + '<cr><h4/>' +
                 '<p>created on ' + image.upload_time + ', taken at ' + image.address + '<p>'
             );
                 
         });
-        $('#imageList').listview('refresh');
+        $('#listviewImage').listview('refresh');
     });
 }

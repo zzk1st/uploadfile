@@ -24,7 +24,7 @@ else:
 
 ## by default give a view/generic.extension to all actions from localhost
 ## none otherwise. a pattern can be 'controller/function.extension'
-response.generic_patterns = ['*'] if request.is_local else []
+response.generic_patterns = ['*.json']
 ## (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
 # response.optimize_js = 'concat,minify,inline'
@@ -57,6 +57,7 @@ mail.settings.login = 'username:password'
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
+#auth.settings.login_url = URL(r=request,f='notLogin')
 
 ## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
 ## register with janrain.com, write your domain:api_key in private/janrain.key
@@ -81,9 +82,10 @@ use_janrain(auth, filename='private/janrain.key')
 #########################################################################
 
 db.define_table('image',
-    Field('upload_time', 'datetime', default=request.now, writable = False, readable = False),
+    Field('upload_time', 'datetime', default=request.now, writable=False, readable=False),
     Field('address'),
     Field('note','text'),
+    Field('status'),
     Field('imagefile', 'upload'),
     Field('thumbnail','upload',writable=False, readable=False)
     )
