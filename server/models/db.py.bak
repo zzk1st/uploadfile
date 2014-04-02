@@ -57,7 +57,7 @@ mail.settings.login = 'username:password'
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-#auth.settings.login_url = URL(r=request,f='notLogin')
+auth.settings.login_url = URL(r=request,f='notLogin')
 
 ## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
 ## register with janrain.com, write your domain:api_key in private/janrain.key
@@ -86,6 +86,8 @@ db.define_table('image',
     Field('address'),
     Field('note','text'),
     Field('status'),
+    Field('Latitude'),
+    Field('Longitude'),
     Field('imagefile', 'upload'),
     Field('thumbnail','upload',writable=False, readable=False)
     )

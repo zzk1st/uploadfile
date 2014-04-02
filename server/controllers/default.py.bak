@@ -11,9 +11,11 @@
 
 
 def download():
+    response.headers['Access-Control-Allow-Origin'] = "*"
     return response.download(request,db)
 
 def link():
+    response.headers['Access-Control-Allow-Origin'] = "*"
     return response.download(request,db,attachment=False)
 
 def notLogin():
@@ -21,6 +23,7 @@ def notLogin():
 
 @service.run
 def login(username, password):
+    response.headers['Access-Control-Allow-Origin'] = "*"
     user = auth.login_bare(username,password)
     return (user != False)
 
@@ -42,17 +45,21 @@ def makeThumbnail(dbtable,ImageID,size=(150,150)):
     thisImage.update_record(thumbnail=thumbnail)
     return
 
+@auth.requires_login()
 def upload():
+    response.headers['Access-Control-Allow-Origin'] = "*"
     image = db.image.imagefile.store(request.vars.imagefile.file, request.vars.imagefile.filename)
     id = db.image.insert(   address=request.vars.address,
                             note=request.vars.note,
                             status="reviewing",
+                            latitude=request.vars.latitude,
+                            longitude=request.vars.longitude,
                             imagefile=image)
 
     makeThumbnail(db.image, id)
     return
 
-#@auth.requires_login()
+@auth.requires_login()
 def getimagelist():
     # don't know what it is, it's related to accessing server with different port
     response.headers['Access-Control-Allow-Origin'] = "*"
@@ -64,12 +71,14 @@ def getimagelist():
         
     for image in images:
         # the code below is ugly, but we can't simply copy it by image.__dict__, since there are other fields in image
-        imageList[image.id] = dict( id=image.id, 
-                                    upload_time=image.upload_time, 
+        imageList[image.id] = dict( id=image.id,
+                                    upload_time=image.upload_time,
                                     address=image.address,
-                                    note=image.note, 
+                                    note=image.note,
                                     status=image.status,
-                                    imagefile=image.imagefile, 
+                                    latitude=image.latitude,
+                                    longitude=image.longitude,
+                                    imagefile=image.imagefile,
                                     thumbnail=image.thumbnail
                                     )
         

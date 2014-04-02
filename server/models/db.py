@@ -86,6 +86,8 @@ db.define_table('image',
     Field('address'),
     Field('note','text'),
     Field('status'),
+    Field('latitude'),
+    Field('longitude'),
     Field('imagefile', 'upload'),
     Field('thumbnail','upload',writable=False, readable=False)
     )
